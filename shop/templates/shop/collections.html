@@ -1,57 +1,81 @@
 {% extends 'shop/layouts/main.html' %}
 
-{% block title %}Collections ! Shopkart{% endblock title %}
+{% block title %}
+Collections - Shopkart
+{% endblock title %}
 
 {% block content %}
-<div class="container" style="margin-top: 80px;">
-  <div class="row">
-    <div class="col-12">
-      <h1>Collections</h1>
+
+<section class="py-5 text-center container" style="margin-top:70px;">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light">Collections</h1>
+      <p class="lead text-muted">Explore our categories and products.</p>
     </div>
   </div>
+</section>
 
-  <!-- Loop through each category -->
-  {% for category in categories %}
-  <div class="row mt-4">
-    <div class="col-12">
-      <h2>{{ category.name }}</h2>
-      {% if category.description %}
-        <p>{{ category.description }}</p>
-      {% endif %}
-    </div>
-  </div>
+<section class="bg-light py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3">Categories</h4>
+        <hr style="border-color: #b6bfc2">
+      </div>
 
-  <!-- Display products under this category -->
-  <div class="row">
-    {% for product in category.product_set.all %}
-      <div class="col-md-3 mb-4">
-        <div class="card">
-          {% if product.product_image %}
-            <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.name }}">
+      {% for item in categories %}
+      <div class="col-md-4 col-lg-3">
+        <div class="card my-3 h-100">
+          {% if item.image %}
+          <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
           {% endif %}
           <div class="card-body">
-            <h5 class="card-title">{{ product.name }}</h5>
-            <p class="card-text">{{ product.description|truncatewords:15 }}</p>
-            <p class="text-muted">Vendor: {{ product.vendor }}</p>
-            {% if product.selling_price %}
-              <p class="text-success"><strong>₹{{ product.selling_price }}</strong></p>
-            {% endif %}
-            {% if product.original_price and product.original_price != product.selling_price %}
-              <p class="text-muted"><del>₹{{ product.original_price }}</del></p>
-            {% endif %}
-            <a href="#" class="btn btn-primary">View Details</a>
+            <h5 class="card-title text-primary">{{ item.name }}</h5>
+            <p class="card-text">{{ item.description }}</p>
+            <a href="#products-{{ item.id }}" class="btn btn-primary">View Products</a>
           </div>
         </div>
       </div>
-    {% empty %}
-      <div class="col-12">
-        <p class="text-muted">No products available in this category yet.</p>
-      </div>
-    {% endfor %}
+      {% endfor %}
+    </div>
   </div>
-  <hr>
-  {% endfor %}
-</div>
-{% endblock content %}
+</section>
 
+<section class="py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3">All Products</h4>
+        <hr style="border-color: #b6bfc2">
+      </div>
+
+      {% for cat in categories %}
+      <div class="col-12 mb-4">
+        <h5 id="products-{{ cat.id }}" class="text-primary">{{ cat.name }} Products</h5>
+        <div class="row">
+          {% for prod in cat.product_set.all %}
+          <div class="col-md-4 col-lg-3">
+            <div class="card my-3 h-100">
+              {% if prod.product_image %}
+              <img src="{{ prod.product_image.url }}" class="card-img-top" alt="{{ prod.name }}">
+              {% endif %}
+              <div class="card-body">
+                <h6 class="card-title">{{ prod.name }}</h6>
+                <p class="text-muted">Price: ₹{{ prod.selling_price }}</p>
+                {% if prod.trending %}
+                <span class="badge bg-primary">Trending</span>
+                {% endif %}
+                <a href="{% url 'product_detail' prod.id %}" class="btn btn-secondary">View Details</a>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
 
