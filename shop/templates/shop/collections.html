@@ -13,6 +13,17 @@ Collections - Shopkart
       <p class="lead text-muted">Explore our categories and products.</p>
     </div>
   </div>
+  <div class="row">
+    <div class="col-12">
+      <hr>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page" style="color: #007bff;">Collections</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
 </section>
 
 <section class="bg-light py-4 my-5">
@@ -61,7 +72,11 @@ Collections - Shopkart
               {% endif %}
               <div class="card-body">
                 <h6 class="card-title">{{ prod.name }}</h6>
+                {% if prod.original_price %}
+                <p class="text-muted"><del style="color: red;">₹{{ prod.original_price }}</del> &nbsp; <span style="color: green; font-weight: bold;">₹{{ prod.selling_price }}</span></p>
+                {% else %}
                 <p class="text-muted">Price: ₹{{ prod.selling_price }}</p>
+                {% endif %}
                 {% if prod.trending %}
                 <span class="badge bg-primary">Trending</span>
                 {% endif %}

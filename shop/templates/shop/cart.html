@@ -1,0 +1,62 @@
+{% extends 'shop/layouts/main.html' %}
+
+{% block title %}
+Cart - Shopkart
+{% endblock title %}
+
+{% block content %}
+
+<section class="py-5 text-center container" style="margin-top:70px;">
+  <div class="row py-lg-5">
+    <div class="col-lg-6 col-md-8 mx-auto">
+      <h1 class="fw-light">Your Cart</h1>
+      <p class="lead text-muted">Review your selected items</p>
+    </div>
+  </div>
+</section>
+
+<section class="bg-light py-4 my-5">
+  <div class="container">
+    {% if cart_items %}
+      <div class="row">
+        {% for item in cart_items %}
+          <div class="col-md-12 mb-3">
+            <div class="card">
+              <div class="row g-0">
+                <div class="col-md-2">
+                  {% if item.image %}
+                    <img src="{{ item.image }}" class="img-fluid rounded-start" alt="{{ item.name }}">
+                  {% endif %}
+                </div>
+                <div class="col-md-10">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ item.name }}</h5>
+                    <p class="card-text">Price: ₹{{ item.price }}</p>
+                    <p class="card-text">Quantity: {{ item.quantity }}</p>
+                    <p class="card-text">Total: ₹{{ item.total }}</p>
+                    <a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger btn-sm">Remove</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Total: ₹{{ total }}</h3>
+          <a href="#" class="btn btn-success">Proceed to Checkout</a>
+        </div>
+      </div>
+    {% else %}
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <h3>Your cart is empty</h3>
+          <a href="{% url 'collections' %}" class="btn btn-primary">Continue Shopping</a>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock content %}
