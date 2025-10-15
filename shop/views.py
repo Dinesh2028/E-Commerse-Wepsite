@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth import logout
 from .models import *
 from .models import Catagory
 
@@ -73,3 +74,7 @@ def remove_from_cart(request, id):
     else:
         messages.error(request, "Item not found in cart.")
     return redirect('cart')
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')

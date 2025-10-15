@@ -1,15 +1,145 @@
 {% extends 'shop/layouts/main.html' %}
 
 {% block title %}
-      Registration ! Shopkart
+      Authentication | Shopkart
 {% endblock title %}
 
 {% block content %}
-   <div class="container" style="margin-top: 80px;">
-  <div class="row">
-    <div class="col-12">
-   <h1>This is A Resgiterpage</h1>
+<div class="container" style="margin-top: 80px;">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-header bg-primary text-white text-center">
+          <h4 class="mb-0" id="form-title">Create Your Account</h4>
+        </div>
+        <div class="card-body">
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <!-- Register Form -->
+          <form method="post" novalidate id="register-form" style="{% if mode == 'login' %}display: none;{% endif %}">
+            {% csrf_token %}
+            <input type="hidden" name="register" value="1">
+            {% if register_form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in register_form.non_field_errors %}
+                  <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <div class="mb-3">
+              <label for="{{ register_form.username.id_for_label }}" class="form-label">Username</label>
+              {{ register_form.username }}
+              {% if register_form.username.errors %}
+                <div class="text-danger small">
+                  {% for error in register_form.username.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label for="{{ register_form.email.id_for_label }}" class="form-label">Email Address</label>
+              {{ register_form.email }}
+              {% if register_form.email.errors %}
+                <div class="text-danger small">
+                  {% for error in register_form.email.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label for="{{ register_form.password1.id_for_label }}" class="form-label">Password</label>
+              {{ register_form.password1 }}
+              {% if register_form.password1.errors %}
+                <div class="text-danger small">
+                  {% for error in register_form.password1.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label for="{{ register_form.password2.id_for_label }}" class="form-label">Confirm Password</label>
+              {{ register_form.password2 }}
+              {% if register_form.password2.errors %}
+                <div class="text-danger small">
+                  {% for error in register_form.password2.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Register</button>
+            </div>
+          </form>
+
+          <!-- Login Form -->
+          <form method="post" novalidate id="login-form" style="{% if mode != 'login' %}display: none;{% endif %}">
+            {% csrf_token %}
+            <input type="hidden" name="login" value="1">
+            {% if login_form.non_field_errors %}
+              <div class="alert alert-danger" role="alert">
+                {% for error in login_form.non_field_errors %}
+                  <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <div class="mb-3">
+              <label for="{{ login_form.username.id_for_label }}" class="form-label">Username</label>
+              {{ login_form.username }}
+              {% if login_form.username.errors %}
+                <div class="text-danger small">
+                  {% for error in login_form.username.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label for="{{ login_form.password.id_for_label }}" class="form-label">Password</label>
+              {{ login_form.password }}
+              {% if login_form.password.errors %}
+                <div class="text-danger small">
+                  {% for error in login_form.password.errors %}{{ error }}{% endfor %}
+                </div>
+              {% endif %}
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Login</button>
+            </div>
+          </form>
+        </div>
+        <div class="card-footer text-center">
+          <small class="text-muted">
+            <span id="toggle-text">Already have an account?</span>
+            <button type="button" class="btn btn-link p-0 text-decoration-none" id="toggle-btn">Login here</button>
+          </small>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+
+<script>
+document.getElementById('toggle-btn').addEventListener('click', function() {
+    var registerForm = document.getElementById('register-form');
+    var loginForm = document.getElementById('login-form');
+    var formTitle = document.getElementById('form-title');
+    var toggleText = document.getElementById('toggle-text');
+    var toggleBtn = document.getElementById('toggle-btn');
+
+    if (registerForm.style.display === 'none') {
+        registerForm.style.display = 'block';
+        loginForm.style.display = 'none';
+        formTitle.textContent = 'Create Your Account';
+        toggleText.textContent = 'Already have an account?';
+        toggleBtn.textContent = 'Login here';
+    } else {
+        registerForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        formTitle.textContent = 'Login to Your Account';
+        toggleText.textContent = 'Don\'t have an account?';
+        toggleBtn.textContent = 'Register here';
+    }
+});
+</script>
 {% endblock content %}
