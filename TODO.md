@@ -1,3 +1,3 @@
-- [x] Move logout URL from testapp/urls.py to shop/urls.py
-- [x] Update navbar.html to change logout from button to link
-- [x] Test logout functionality visually
+- [x] Create shop/context_processors.py with cart_count function
+- [x] Update din_project/settings.py to add the context processor
+- [x] Update shop/templates/shop/inc/navbar.html to use cart_count

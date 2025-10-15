@@ -11,7 +11,7 @@
         </li>
         {% if user.is_authenticated %}
           <li class="nav-item">
-            <span class="nav-link">Welcome, {{ user.username }}</span>
+            <span class="nav-link">{{ user.username }}</span>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -29,7 +29,7 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'cart' %}">
-            Cart {% if request.session.cart %}({{ request.session.cart|length }}){% endif %}
+            Cart {% if cart_count %}({{ cart_count }}){% endif %}
           </a>
         </li>
       </ul>

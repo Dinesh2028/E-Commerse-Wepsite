@@ -53,8 +53,33 @@
         {% if product.quantity and product.quantity > 0 %}
           <form method="post" action="{% url 'add_to_cart' product.id %}">
             {% csrf_token %}
+            <div class="mb-3">
+              <label for="quantity" class="form-label">Quantity:</label>
+              <div class="quantity-selector d-flex align-items-center">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="decrementQuantity()">-</button>
+                <input type="number" id="quantity" name="quantity" class="form-control text-center mx-2" min="1" max="{{ product.quantity }}" value="1" readonly style="width: 80px;">
+                <button type="button" class="btn btn-outline-secondary btn-sm" onclick="incrementQuantity()">+</button>
+              </div>
+            </div>
             <button type="submit" class="btn btn-primary mt-3">Add to Cart</button>
           </form>
+          <script>
+            function incrementQuantity() {
+              const input = document.getElementById('quantity');
+              const max = parseInt(input.max);
+              let value = parseInt(input.value);
+              if (value < max) {
+                input.value = value + 1;
+              }
+            }
+            function decrementQuantity() {
+              const input = document.getElementById('quantity');
+              let value = parseInt(input.value);
+              if (value > 1) {
+                input.value = value - 1;
+              }
+            }
+          </script>
         {% else %}
           <p class="text-danger mt-3">Out of Stock</p>
         {% endif %}

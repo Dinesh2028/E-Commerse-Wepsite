@@ -15,7 +15,12 @@ a {
 .carousel-item img {
     object-fit: cover;
     object-position: top;
-    height: 60vh;
+    height: 400px;
     overflow: hidden;
+}
+
+img {
+    height: 200px;
+    object-fit: cover;
 }
 
