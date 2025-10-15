@@ -5,7 +5,8 @@ from .models import Catagory
 
 # Create your views here.
 def home(request):
-    return render(request,"shop/index.html")
+    trending_products = Product.objects.filter(status=0, trending=True).order_by('-created_at')
+    return render(request,"shop/index.html", {"trending_products": trending_products})
 
 def register(request):
     return render(request,"shop/register.html")
